@@ -3,10 +3,7 @@ package main.java.algorithm.datastructure;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class 듣보잡_1764_백준 {
@@ -20,13 +17,11 @@ public class 듣보잡_1764_백준 {
         int M = Integer.parseInt(st.nextToken());
 
         Set<String> NSet = new HashSet<>();
-
         for (int i = 0; i < N; i++) {
             NSet.add(br.readLine());
         }
 
-        Set<String> resultSet = new HashSet<>();
-
+        Set<String> resultSet = new TreeSet<>();
         for (int i = 0; i < M; i++) {
             String value = br.readLine();
 
@@ -35,12 +30,10 @@ public class 듣보잡_1764_백준 {
             }
         }
 
-        List<String> collect = resultSet.stream().sorted().collect(Collectors.toUnmodifiableList());
         StringBuffer sb = new StringBuffer();
-        for (String s : collect) {
+        for (String s : resultSet) {
             sb.append(s + "\n");
         }
-
 
         System.out.println(resultSet.size());
         System.out.println(sb);
