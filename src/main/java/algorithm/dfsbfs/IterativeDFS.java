@@ -22,7 +22,7 @@ public class IterativeDFS {
         addEdge(2, 4);
         addEdge(4, 5);
 
-
+        iterativeDfs(1);
     }
 
     static void addEdge(int u, int v) {
