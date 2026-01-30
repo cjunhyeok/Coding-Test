@@ -3,6 +3,8 @@ package main.java.algorithm.dfsbfs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class 유기농배추_1012_백준 {
@@ -43,7 +45,7 @@ public class 유기농배추_1012_백준 {
             for (int i = 0; i < M; i++) {
                 for (int j = 0; j < N; j++) {
                     if ((list[i][j] == 1) && !visited[i][j]) {
-                        dfs(i, j);
+                        bfs(i, j);
                         result++;
                     }
                 }
@@ -63,6 +65,30 @@ public class 유기농배추_1012_백준 {
             if (nextX < M && nextY < N && nextX >= 0 && nextY >= 0) {
                 if (list[nextX][nextY] == 1 && !visited[nextX][nextY]) {
                     dfs(nextX, nextY);
+                }
+            }
+        }
+    }
+
+    static void bfs(int startX, int startY) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startX, startY});
+        visited[startX][startY] = true;
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int x = current[0];
+            int y = current[1];
+
+            for (int i = 0; i < 4; i++) {
+                int nextX = x + dx[i];
+                int nextY = y + dy[i];
+
+                if (nextX < M && nextY < N && nextX >= 0 && nextY >= 0) {
+                    if (list[nextX][nextY] == 1 && !visited[nextX][nextY]) {
+                        visited[nextX][nextY] = true;
+                        queue.add(new int[]{nextX, nextY});
+                    }
                 }
             }
         }
