@@ -48,4 +48,18 @@ public class 신입사원_1946_백준 {
             System.out.println(result);
         }
     }
+
+    // 인덱스가 서류 순위, 값이 면접 순위인 배열 생성
+    // 1등부터 N등까지이므로 크기를 N + 1로 잡습니다
+    /**
+     * int[] interviewRanks = new int[N + 1];
+     *
+     * for (int i = 0; i < N; i++) {
+     *      StringTokenizer st = new StringTokenizer(br.readLine());
+     *      int docRank = Integer.parseInt(st.nextToken());
+     *      int interviewRank = Integer.parseInt(st.nextToken());
+     *      interviewRanks[docRank] = interviewRank;
+     * }
+     */
+
 }
