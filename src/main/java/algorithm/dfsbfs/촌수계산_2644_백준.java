@@ -8,17 +8,13 @@ import java.util.*;
 public class 촌수계산_2644_백준 {
 
     static List<Integer>[] lists;
-    static boolean[] visited;
     static int start, end;
-    static boolean isCorrect = false;
-    static int result = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
         lists = new ArrayList[N + 1];
-        visited = new boolean[N + 1];
 
         for (int i = 1; i <= N; i++) {
             lists[i] = new ArrayList<>();
@@ -44,42 +40,29 @@ public class 촌수계산_2644_백준 {
         }
 
         dfs(start);
-
-        if (isCorrect) {
-            System.out.println(result);
-        } else {
-            System.out.println(-1);
-        }
     }
 
     static void dfs(int startX) {
         Queue<Integer> queue = new LinkedList<>();
-        visited[startX] = true;
         queue.add(startX);
+
+        int[] dist = new int[lists.length];
+        Arrays.fill(dist, -1);
+        dist[startX] = 0;
+
 
         while (!queue.isEmpty()) {
             Integer poll = queue.poll();
             List<Integer> list = lists[poll];
 
-            if (isCorrect) {
-                break;
-            }
-
-            result++;
-
-            for (int i = 0; i < list.size(); i++) {
-                Integer value = list.get(i);
-
-                if (Objects.equals(value, end)) {
-                    isCorrect = true;
-                    break;
-                }
-
-                if (!visited[value]) {
-                    visited[value] = true;
-                    queue.add(value);
+            for (Integer i : list) {
+                if (dist[i] == -1) {
+                    dist[i] = dist[poll] + 1;
+                    queue.add(i);
                 }
             }
         }
+
+        System.out.println(dist[end]);
     }
 }
