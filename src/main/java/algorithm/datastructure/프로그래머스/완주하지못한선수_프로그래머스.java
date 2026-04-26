@@ -1,4 +1,4 @@
-package main.java.algorithm.datastructure;
+package main.java.algorithm.datastructure.프로그래머스;
 
 import java.util.HashMap;
 import java.util.Map;
