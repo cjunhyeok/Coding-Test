@@ -4,25 +4,24 @@ import java.util.Stack;
 
 public class 큰수만들기_프로그래머스 {
 
-    public String solution(String number, int k) {
-        Stack<Character> stack = new Stack<>();
+    public static String solution(String number, int k) {
 
+        Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < number.length(); i++) {
-            char value = number.charAt(i);
+            int value = number.charAt(i) - '0';
 
-            while (!stack.isEmpty()) {
-                if (k == 0) {
+            if (stack.isEmpty()) {
+                stack.add(value);
+                continue;
+            }
+
+            while (!stack.isEmpty() && k > 0) {
+                if (stack.peek() < value) {
+                    stack.pop();
+                    k--;
+                } else {
                     break;
                 }
-
-                Character peek = stack.peek();
-
-                if (peek >= value) {
-                    break;
-                }
-
-                stack.pop();
-                k--;
             }
 
             stack.add(value);
@@ -33,8 +32,8 @@ public class 큰수만들기_프로그래머스 {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Character c : stack) {
-            sb.append(c);
+        for (Integer i : stack) {
+            sb.append(i);
         }
 
         return sb.toString();
