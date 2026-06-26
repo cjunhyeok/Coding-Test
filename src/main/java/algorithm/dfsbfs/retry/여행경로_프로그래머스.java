@@ -1,18 +1,22 @@
 package main.java.algorithm.dfsbfs.retry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class 여행경로_프로그래머스 {
 
     private static int N;
+    private static boolean[] used;
+    private static boolean found = false;
+    private static List<String> path = new ArrayList<>();
     private static String[] answer;
-    private static boolean[] visited;
-    private static boolean isCorrect = false;
 
     public String[] solution(String[][] tickets) {
+
         N = tickets.length;
-        answer = new String[N + 1];
-        visited = new boolean[N];
+        used = new boolean[N];
+        answer = new String[N];
 
         Arrays.sort(tickets, (a, b) -> {
             if (a[0].equals(b[0])) {
@@ -21,43 +25,43 @@ public class 여행경로_프로그래머스 {
             return a[0].compareTo(b[0]);
         });
 
-        List<String> resultList = new ArrayList<>();
-        resultList.add("ICN");
-        dfs("ICN", tickets, resultList);
+        path.add("ICN");
+        dfs("ICN", tickets);
 
         return answer;
     }
 
-    private static void dfs(String start, String[][] tickets, List<String> resultList) {
-        if (isCorrect) {
+    private static void dfs(String current, String[][] tickets) {
+        if (found) {
             return;
         }
 
-        if (resultList.size() == N + 1) {
-            isCorrect = true;
-            answer = resultList.toArray(new String[0]);
+        if (path.size() == N + 1) {
+            answer = path.toArray(new String[0]);
+            found = true;
             return;
         }
 
         for (int i = 0; i < N; i++) {
+            if (used[i]) {
+                continue;
+            }
+
             String[] ticket = tickets[i];
-            String ticketStart = ticket[0];
-            String ticketEnd = ticket[1];
+            String start = ticket[0];
+            String end = ticket[1];
 
-            if (!start.equals(ticketStart)) {
-                continue;
+            if (!current.equals(start)) {
+               continue;
             }
 
-            if (visited[i]) {
-                continue;
-            }
+            used[i] = true;
+            path.add(end);
 
-            visited[i] = true;
-            resultList.add(ticketEnd);
-            dfs(ticketEnd, tickets, resultList);
+            dfs(end, tickets);
 
-            resultList.remove(resultList.size() - 1);
-            visited[i] = false;
+            used[i] = false;
+            path.remove(path.size() - 1);
         }
     }
 }
