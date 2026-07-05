@@ -9,14 +9,15 @@ public class 시소짝궁_프로그래머스 {
         long answer = 0;
 
         Arrays.sort(weights);
-
         Map<Double, Long> map = new HashMap<>();
 
-        for (int weight : weights) {
-            answer += map.getOrDefault(weight * 1.0, 0L);
-            answer += map.getOrDefault(weight * 2.0 / 3.0, 0L);
-            answer += map.getOrDefault(weight * 1.0 / 2.0, 0L);
-            answer += map.getOrDefault(weight * 3.0 / 4.0, 0L);
+        for (int i = 0; i < weights.length; i++) {
+            int weight = weights[i];
+
+            answer = answer + map.getOrDefault(weight * (3.0 / 4.0), 0L);
+            answer = answer + map.getOrDefault(weight * (1.0 / 2.0), 0L);
+            answer = answer + map.getOrDefault(weight * (2.0 / 3.0), 0L);
+            answer = answer + map.getOrDefault(weight * 1.0, 0L);
 
             map.put(weight * 1.0, map.getOrDefault(weight * 1.0, 0L) + 1);
         }
