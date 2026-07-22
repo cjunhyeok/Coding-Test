@@ -12,33 +12,35 @@ public class N으로표현_프로그래머스 {
             dp.add(new HashSet<>());
         }
 
-        for (int count = 1; count <= 8; count++) {
+        for (int i = 1; i <= 8; i++) {
             int repeat = 0;
 
-            for (int i = 0; i < count; i++) {
-                repeat = repeat * 10 + N;
+            for (int j = 0; j < i; j++){
+                 repeat = repeat * 10 + N;
             }
 
-            dp.get(count).add(repeat);
+            dp.get(i).add(repeat);
 
-            for (int left = 1; left < count; left++) {
-                int right = count - left;
+            for (int left = 1; left < i; left++) {
+                int right = i - left;
 
-                for (int a : dp.get(left)) {
-                    for (int b : dp.get(right)) {
-                        dp.get(count).add(a + b);
-                        dp.get(count).add(a - b);
-                        dp.get(count).add(a * b);
+                Set<Integer> lefts = dp.get(left);
+                for (Integer l : lefts) {
+                    Set<Integer> rights = dp.get(right);
+                    for (Integer r : rights) {
+                        dp.get(i).add(l + r);
+                        dp.get(i).add(l - r);
+                        dp.get(i).add(l * r);
 
-                        if (b != 0) {
-                            dp.get(count).add(a / b);
+                        if (r != 0) {
+                            dp.get(i).add(l / r);
                         }
                     }
                 }
             }
 
-            if (dp.get(count).contains(number)) {
-                return count;
+            if (dp.get(i).contains(number)) {
+                return i;
             }
         }
 
