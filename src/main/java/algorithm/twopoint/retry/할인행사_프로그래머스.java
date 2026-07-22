@@ -4,45 +4,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class 할인행사_프로그래머스 {
-
     public int solution(String[] want, int[] number, String[] discount) {
         int answer = 0;
-
-        Map<String, Integer> map = new HashMap<>();
         int length = want.length;
 
+        Map<String, Integer> map = new HashMap<>();
+
         for (int i = 0; i < length; i++) {
-            map.put(want[i], number[i]);
+            String product = want[i];
+            int num = number[i];
+
+            map.put(product, num);
         }
 
         for (int i = 0; i < 10; i++) {
-            String key = discount[i];
+            String product = discount[i];
 
-            if (map.containsKey(key)) {
-                Integer value = map.get(key);
-                map.put(key, value - 1);
+            if (map.containsKey(product)) {
+                Integer count = map.get(product);
+                map.put(product, count - 1);
             }
         }
 
-        boolean isAnswer = true;
-        for (String s : map.keySet()) {
-            Integer count = map.get(s);
-
+        boolean isCorrect = true;
+        for (String key : map.keySet()) {
+            Integer count = map.get(key);
             if (count > 0) {
-                isAnswer = false;
+                isCorrect = false;
             }
         }
-        if (isAnswer) {
+
+        if (isCorrect) {
             answer++;
         }
 
         int left = 0;
         for (int right = 10; right < discount.length; right++) {
-
             String leftKey = discount[left];
             if (map.containsKey(leftKey)) {
-                Integer value = map.get(leftKey);
-                map.put(leftKey, value + 1);
+                Integer count = map.get(leftKey);
+                map.put(leftKey, count + 1);
             }
 
             String rightKey = discount[right];
@@ -52,16 +53,16 @@ public class 할인행사_프로그래머스 {
                 map.put(rightKey, value - 1);
             }
 
-            isAnswer = true;
+            isCorrect = true;
             for (String s : map.keySet()) {
                 Integer count = map.get(s);
 
                 if (count > 0) {
-                    isAnswer = false;
+                    isCorrect = false;
                     break;
                 }
             }
-            if (isAnswer) {
+            if (isCorrect) {
                 answer++;
             }
 
