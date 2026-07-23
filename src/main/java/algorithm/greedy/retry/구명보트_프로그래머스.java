@@ -3,7 +3,6 @@ package main.java.algorithm.greedy.retry;
 import java.util.Arrays;
 
 public class 구명보트_프로그래머스 {
-
     public int solution(int[] people, int limit) {
         int answer = 0;
 
@@ -12,28 +11,24 @@ public class 구명보트_프로그래머스 {
         int left = 0;
         int right = people.length - 1;
 
-        while (true) {
-
-            if (left > right) {
-                break;
-            }
+        while (left <= right) {
 
             if (left == right) {
                 answer++;
                 break;
             }
 
-            int leftWeight = people[left];
-            int rightWeight = people[right];
+            int leftPerson = people[left];
+            int rightPerson = people[right];
 
-            int sum = leftWeight + rightWeight;
+            int weight = leftPerson + rightPerson;
 
-            if (sum <= limit) {
-                left++;
-                right--;
+            if (weight > limit) {
+                right -= 1;
                 answer++;
             } else {
-                right--;
+                left += 1;
+                right -= 1;
                 answer++;
             }
         }
