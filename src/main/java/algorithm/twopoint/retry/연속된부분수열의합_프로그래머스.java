@@ -1,36 +1,52 @@
 package main.java.algorithm.twopoint.retry;
 
 public class 연속된부분수열의합_프로그래머스 {
-
     public int[] solution(int[] sequence, int k) {
-        int left = 0;
-        int right = 0;
-        int sum = 0;
+        int[] answer = {};
 
-        int bestLeft = 0;
-        int bestRight = sequence.length - 1;
+        int N = sequence.length;
 
-        while (true) {
-            if (sum >= k) {
-                if (sum == k) {
-                    if (right - 1 - left < bestRight - bestLeft) {
-                        bestLeft = left;
-                        bestRight = right - 1;
+        int leftIndex = 0;
+        int rightIndex = 0;
+        int sum = sequence[0];
+
+        int currentAnswerLength = Integer.MAX_VALUE;
+
+        while (leftIndex < N) {
+
+            if (sum == k) {
+                int length = rightIndex - leftIndex;
+                if (length < currentAnswerLength) {
+                    currentAnswerLength = length;
+                    answer = new int[]{leftIndex, rightIndex};
+                    if (rightIndex < N - 1) {
+                        rightIndex++;
+                        sum = sum + sequence[rightIndex];
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (rightIndex < N - 1) {
+                        rightIndex++;
+                        sum = sum + sequence[rightIndex];
+                    } else {
+                        break;
                     }
                 }
+            } else if (sum < k) {
 
-                sum -= sequence[left];
-                left++;
-            } else {
-                if (right == sequence.length) {
+                if (rightIndex == N - 1) {
                     break;
                 }
 
-                sum += sequence[right];
-                right++;
+                rightIndex++;
+                sum = sum + sequence[rightIndex];
+            } else {
+                sum = sum - sequence[leftIndex];
+                leftIndex++;
             }
         }
 
-        return new int[]{bestLeft, bestRight};
+        return answer;
     }
 }
