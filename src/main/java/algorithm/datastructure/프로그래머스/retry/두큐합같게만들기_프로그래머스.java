@@ -5,54 +5,61 @@ import java.util.Queue;
 
 public class 두큐합같게만들기_프로그래머스 {
     public int solution(int[] queue1, int[] queue2) {
-
-        Queue<Long> leftQueue = new LinkedList<>();
-        Queue<Long> rightQueue = new LinkedList<>();
-        long leftSum = 0;
-        long rightSum = 0;
-        for (int i = 0; i < queue1.length; i++) {
-            int left = queue1[i];
-            leftQueue.add(Long.valueOf(left));
-            leftSum = leftSum + left;
-
-            int right = queue2[i];
-            rightQueue.add(Long.valueOf(right));
-            rightSum = rightSum + right;
-        }
-
-        if ((leftSum + rightSum) % 2 != 0) {
-            return -1;
-        }
-
-        int totalLoopCount = 4 * queue1.length;
         int answer = 0;
 
-        while (leftSum != rightSum) {
+        Queue<Integer> leftQueue = new LinkedList<>();
+        long leftSum = 0l;
+        for (int i = 0; i < queue1.length; i++) {
+            int value = queue1[i];
+            leftQueue.add(value);
+            leftSum += value;
+        }
 
-            if (answer >= totalLoopCount) {
+        Queue<Integer> rightQueue = new LinkedList<>();
+        long rightSum = 0;
+        for (int i = 0; i < queue2.length; i++) {
+            int value = queue2[i];
+            rightQueue.add(value);
+            rightSum += value;
+        }
+
+        long target = (leftSum + rightSum) / 2;
+        int limit = queue1.length * 4;
+
+        int loop = 0;
+        while (true) {
+
+            if (loop == limit) {
                 return -1;
             }
 
-            if (leftQueue.isEmpty()) {
+            if (leftSum == rightSum) {
+                if (leftSum == target) {
+                    break;
+                }
                 return -1;
             }
 
-            if (rightQueue.isEmpty()) {
-                return -1;
-            }
+            if (leftSum < target) {
+                if (rightQueue.isEmpty()) {
+                    return -1;
+                }
 
-            if (leftSum > rightSum) {
-                Long poll = leftQueue.poll();
-                leftSum = leftSum - poll;
-                rightQueue.add(poll);
-                rightSum = rightSum + poll;
-            } else if (leftSum < rightSum){
-                Long poll = rightQueue.poll();
-                rightSum = rightSum - poll;
+                Integer poll = rightQueue.poll();
+                rightSum -= poll;
                 leftQueue.add(poll);
-                leftSum = leftSum + poll;
-            }
+                leftSum += poll;
+            } else if (leftSum > target) {
+                if (leftQueue.isEmpty()) {
+                    return -1;
+                }
 
+                Integer poll = leftQueue.poll();
+                leftSum -= poll;
+                rightQueue.add(poll);
+                rightSum += poll;
+            }
+            loop++;
             answer++;
         }
 
