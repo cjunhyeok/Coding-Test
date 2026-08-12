@@ -4,37 +4,38 @@ import java.util.Arrays;
 
 public class 섬연결하기_프로그래머스 {
 
-    private int[] parent;
+    private static int[] parent;
 
     public int solution(int n, int[][] costs) {
         int answer = 0;
+
+        parent = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
 
         Arrays.sort(costs, (a, b) -> {
             return Integer.compare(a[2], b[2]);
         });
 
-        parent = new int[n];
-        for (int i = 0; i < n; i++) {
-            parent[i] = i;
-        }
-
-        int edge = 0;
-
         for (int i = 0; i < costs.length; i++) {
-            int start = costs[i][0];
-            int end = costs[i][1];
-            int cost = costs[i][2];
+            int[] cost = costs[i];
+            int start = cost[0];
+            int end = cost[1];
+            int price = cost[2];
 
-            if (find(start) == find(end)) {
-                continue;
+            int startParent = find(start);
+            int endParent = find(end);
+
+            if (startParent != endParent) {
+                union(startParent, endParent);
+                answer += price;
+                n--;
             }
 
-            union(start, end);
-            answer += cost;
-            edge++;
-
-            if (edge == n - 1) {
-                break;
+            if (n == 0) {
+                return answer;
             }
         }
 
@@ -49,12 +50,12 @@ public class 섬연결하기_프로그래머스 {
         return parent[x] = find(parent[x]);
     }
 
-    private void union(int a, int b) {
-        int parentA = find(a);
-        int parentB = find(b);
+    private void union(int x, int y) {
+        int parentX = find(x);
+        int parentY = find(y);
 
-        if (parentA != parentB) {
-            parent[parentB] = parentA;
+        if (parentX != parentY) {
+            parent[y] = parentX;
         }
     }
 }
