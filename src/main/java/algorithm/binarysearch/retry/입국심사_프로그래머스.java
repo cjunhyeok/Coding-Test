@@ -7,13 +7,12 @@ public class 입국심사_프로그래머스 {
         long answer = 0;
 
         Arrays.sort(times);
-
-        long left = 1;
+        long left = 0;
         long right = (long) times[times.length - 1] * n;
+
         answer = right;
 
         while (left <= right) {
-
             long mid = (left + right) / 2;
             long count = 0;
 
