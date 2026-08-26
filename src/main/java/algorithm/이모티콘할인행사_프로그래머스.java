@@ -2,16 +2,21 @@ package main.java.algorithm;
 
 public class 이모티콘할인행사_프로그래머스 {
 
-    private static int[] selected;
+    private static int N;
+    private static int[] path;
+    private static boolean[] visited;
     private static int[][] USERS;
     private static int[] EMOTICONS;
+    private static final int[] DISCOUNT = new int[]{10, 20, 30, 40};
     private static int[] answer = new int[2];
 
     public int[] solution(int[][] users, int[] emoticons) {
-        selected = new int[emoticons.length];
 
+        N = emoticons.length;
         USERS = users;
         EMOTICONS = emoticons;
+        path = new int[N];
+        visited = new boolean[N];
 
         dfs(0);
 
@@ -19,48 +24,52 @@ public class 이모티콘할인행사_프로그래머스 {
     }
 
     private static void dfs(int depth) {
-        if (depth == EMOTICONS.length) {
-            calculate();
-            return;
-        }
+        if (depth == N) {
+            // how to calculate?
 
-        for (int discount : new int[]{10, 20, 30, 40}) {
-            selected[depth] = discount;
-            dfs(depth + 1);
-        }
-    }
+            int currentUsersTotal = 0;
+            int currentPlustCount = 0;
 
-    private static void calculate() {
+            for (int[] user : USERS) {
+                int discountStandard = user[0];
+                int costStandard = user[1];
+                int currentUserTotal = 0;
 
-        int totalPrice = 0;
-        int plusCount = 0;
+                for (int i = 0; i < path.length; i++) {
+                    int discount = path[i];
+                    int emoticon = EMOTICONS[i];
 
-        for (int[] user : USERS) {
-            int percent = user[0];
-            int limit = user[1];
+                    if (discount >= discountStandard) {
+                        int cost = emoticon * (100 - discount) / 100;
+                        currentUserTotal += cost;
+                    }
+                }
 
-            int cost = 0;
-
-            for (int i = 0; i < selected.length; i++) {
-                int discount = selected[i];
-
-                if (discount >= percent) {
-                    int price = EMOTICONS[i] * (100 - discount) / 100;
-                    cost += price;
+                if (currentUserTotal >= costStandard) {
+                    currentPlustCount++;
+                } else {
+                    currentUsersTotal += currentUserTotal;
                 }
             }
 
-            if (cost >= limit) {
-                plusCount++;
-            } else {
-                totalPrice += cost;
+            if (currentPlustCount > answer[0]) {
+                answer = new int[]{currentPlustCount, currentUsersTotal};
+            } else if (currentPlustCount == answer[0]) {
+                if (currentUsersTotal > answer[1]) {
+                    answer = new int[]{currentPlustCount, currentUsersTotal};
+                }
             }
+
+            return;
         }
 
-        if (plusCount > answer[0]) {
-            answer = new int[]{plusCount, totalPrice};
-        } else if (plusCount == answer[0] && totalPrice > answer[1]) {
-            answer = new int[]{plusCount, totalPrice};
+        for (int i = 0; i < 4; i++) {
+            if (!visited[depth]) {
+                visited[depth] = true;
+                path[depth] = DISCOUNT[i];
+                dfs(depth + 1);
+                visited[depth] = false;
+            }
         }
     }
 }
