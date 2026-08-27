@@ -1,4 +1,4 @@
-package main.java.algorithm;
+package main.java.algorithm.twopoint;
 
 public class 풍선터트리기_프로그래머스 {
     public int solution(int[] a) {
