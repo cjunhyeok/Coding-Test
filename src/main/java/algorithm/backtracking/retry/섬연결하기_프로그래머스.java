@@ -4,58 +4,62 @@ import java.util.Arrays;
 
 public class 섬연결하기_프로그래머스 {
 
-    private static int[] parent;
+    private static int[] parents;
 
     public int solution(int n, int[][] costs) {
         int answer = 0;
 
-        parent = new int[n];
-
+        parents = new int[n];
         for (int i = 0; i < n; i++) {
-            parent[i] = i;
+            parents[i] = i;
         }
 
         Arrays.sort(costs, (a, b) -> {
             return Integer.compare(a[2], b[2]);
         });
 
+        int count = 0;
+
         for (int i = 0; i < costs.length; i++) {
-            int[] cost = costs[i];
-            int start = cost[0];
-            int end = cost[1];
-            int price = cost[2];
+            int[] path = costs[i];
+            int start = path[0];
+            int end = path[1];
+            int cost = path[2];
 
             int startParent = find(start);
             int endParent = find(end);
 
-            if (startParent != endParent) {
-                union(startParent, endParent);
-                answer += price;
-                n--;
+            if (startParent == endParent) {
+                continue;
             }
 
-            if (n == 0) {
-                return answer;
+            union(start, end);
+
+            answer += cost;
+            count++;
+
+            if (count == n - 1) {
+                break;
             }
         }
 
         return answer;
     }
 
-    private int find(int x) {
-        if (parent[x] == x) {
+    private static int find(int x) {
+        if (parents[x] == x) {
             return x;
         }
 
-        return parent[x] = find(parent[x]);
+        return parents[x] = find(parents[x]);
     }
 
-    private void union(int x, int y) {
-        int parentX = find(x);
-        int parentY = find(y);
+    private static void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
 
-        if (parentX != parentY) {
-            parent[y] = parentX;
+        if (rootX != rootY) {
+            parents[rootY] = rootX;
         }
     }
 }
