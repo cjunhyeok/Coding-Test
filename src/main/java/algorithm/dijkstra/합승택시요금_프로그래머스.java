@@ -1,4 +1,4 @@
-package main.java.algorithm;
+package main.java.algorithm.dijkstra;
 
 import java.util.*;
 
