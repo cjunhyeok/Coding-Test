@@ -7,33 +7,34 @@ public class 징검다리_프로그래머스 {
         long answer = 0;
 
         Arrays.sort(rocks);
-
         long left = 0;
         long right = distance;
 
         while (left <= right) {
             long mid = (left + right) / 2;
 
-            int removed = 0;
-            int current = 0;
+            int prev = 0;
+            int count = 0;
 
-            for (int rock : rocks) {
-                if (rock - current < mid) {
-                    removed++;
+            for (int i = 0; i < rocks.length; i++ ){
+                int current = rocks[i];
+                int cost = current - prev;
 
-                    if (removed > n) {
+                if (cost < mid) {
+                    count++;
+                    if (count > n) {
                         break;
                     }
                 } else {
-                    current = rock;
+                    prev = current;
                 }
             }
 
-            if (distance - current < mid) {
-                removed++;
+            if (distance - prev < mid) {
+                count++;
             }
 
-            if (removed <= n) {
+            if (count <= n) {
                 answer = mid;
                 left = mid + 1;
             } else {
