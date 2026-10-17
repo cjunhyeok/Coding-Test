@@ -10,7 +10,7 @@ public class 섬연결하기_프로그래머스 {
         int answer = 0;
 
         parents = new int[n];
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             parents[i] = i;
         }
 
@@ -18,13 +18,11 @@ public class 섬연결하기_프로그래머스 {
             return Integer.compare(a[2], b[2]);
         });
 
-        int count = 0;
-
         for (int i = 0; i < costs.length; i++) {
-            int[] path = costs[i];
-            int start = path[0];
-            int end = path[1];
-            int cost = path[2];
+            int[] values = costs[i];
+            int start = values[0];
+            int end = values[1];
+            int cost = values[2];
 
             int startParent = find(start);
             int endParent = find(end);
@@ -33,12 +31,11 @@ public class 섬연결하기_프로그래머스 {
                 continue;
             }
 
-            union(start, end);
-
+            parents[endParent] = start;
             answer += cost;
-            count++;
+            n--;
 
-            if (count == n - 1) {
+            if (n == 0) {
                 break;
             }
         }
@@ -52,14 +49,5 @@ public class 섬연결하기_프로그래머스 {
         }
 
         return parents[x] = find(parents[x]);
-    }
-
-    private static void union(int x, int y) {
-        int rootX = find(x);
-        int rootY = find(y);
-
-        if (rootX != rootY) {
-            parents[rootY] = rootX;
-        }
     }
 }
