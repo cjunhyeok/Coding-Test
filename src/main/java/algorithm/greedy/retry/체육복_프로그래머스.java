@@ -3,53 +3,61 @@ package main.java.algorithm.greedy.retry;
 import java.util.Arrays;
 
 public class 체육복_프로그래머스 {
-
     public int solution(int n, int[] lost, int[] reserve) {
         int answer = 0;
 
         Arrays.sort(lost);
         Arrays.sort(reserve);
 
-        int[] array = new int[n + 1];
-        // 체육복 모두 1개씩 지급
-        for (int i = 1; i <= n; i++) {
-            array[i] = 1;
-        }
-        // 여벌 옷을 들고 온 인원
-        for (int i : reserve) {
-            array[i] = 2;
-        }
-        // 잃어버린 인원
-        for (int i : lost) {
-            array[i] = array[i] - 1;
-        }
+        int[] students = new int[n + 1];
 
         for (int i = 1; i <= n; i++) {
-            int current = array[i];
+            students[i] = 1;
+        }
 
-            if (current == 0) {
-                int prev = array[i - 1];
+        for (int i = 0; i < reserve.length; i++) {
+            int value = reserve[i];
+            students[value] = students[value] + 1;
+        }
 
-                if (prev == 2) {
-                    array[i - 1] = 1;
-                    array[i] = 1;
-                    continue;
-                }
+        for (int i = 0; i < lost.length; i++) {
+            int value = lost[i];
+            students[value] = students[value] - 1;
+        }
 
-                if (i < n) {
-                    int next = array[i + 1];
-
-                    if (next == 2) {
-                        array[i + 1] = 1;
-                        array[i] = 1;
-                        continue;
-                    }
-                }
+        if (students[1] == 0) {
+            if (students[2] > 1) {
+                students[1] = 1;
+                students[2] = students[2] - 1;
             }
         }
 
+        for (int i = 2; i < n; i++) {
+            int student = students[i];
+
+            if (student != 0) {
+                continue;
+            }
+
+            if (students[i - 1] > 1) {
+                students[i] = 1;
+                students[i - 1] = students[i - 1] - 1;
+                continue;
+            }
+
+            if (students[i + 1] > 1) {
+                students[i] = 1;
+                students[i + 1] = students[i + 1] - 1;
+            }
+        }
+
+        if (students[n] == 0 && students[n - 1] > 1) {
+            students[n] = 1;
+            students[n - 1] = students[n - 1] - 1;
+        }
+
         for (int i = 1; i <= n; i++) {
-            if (array[i] != 0) {
+            if (students[i] > 0) {
                 answer++;
             }
         }
