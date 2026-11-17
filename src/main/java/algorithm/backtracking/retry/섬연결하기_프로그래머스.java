@@ -10,19 +10,19 @@ public class 섬연결하기_프로그래머스 {
         int answer = 0;
 
         parents = new int[n];
-        for (int i = 1; i < n; i++) {
+        for (int i = 0; i < n; i++){
             parents[i] = i;
         }
 
         Arrays.sort(costs, (a, b) -> {
-            return Integer.compare(a[2], b[2]);
+            return a[2] - b[2];
         });
 
         for (int i = 0; i < costs.length; i++) {
-            int[] values = costs[i];
-            int start = values[0];
-            int end = values[1];
-            int cost = values[2];
+            int[] cost = costs[i];
+            int start = cost[0];
+            int end = cost[1];
+            int price = cost[2];
 
             int startParent = find(start);
             int endParent = find(end);
@@ -31,8 +31,8 @@ public class 섬연결하기_프로그래머스 {
                 continue;
             }
 
-            parents[endParent] = start;
-            answer += cost;
+            parents[end] = startParent;
+            answer = answer + price;
             n--;
 
             if (n == 0) {
