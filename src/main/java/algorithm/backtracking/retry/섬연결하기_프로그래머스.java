@@ -31,7 +31,7 @@ public class 섬연결하기_프로그래머스 {
                 continue;
             }
 
-            parents[end] = startParent;
+            parents[endParent] = start;
             answer = answer + price;
             n--;
 
